@@ -18,8 +18,8 @@ const CreateStudents = (req, res) => {
     })
 }
 
-
 module.exports = {
     GetStudents,
-    CreateStudents
+    CreateStudents,
+    students
 }
