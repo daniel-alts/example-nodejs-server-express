@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:web:dev": "nodemon web.js",
-    "start:web:api": "nodemon api.js"
+    "start:web:api": "nodemon api.js",
+    "start":"nodemon api.js"
   },
   "repository": {
     "type": "git",
