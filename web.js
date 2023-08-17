@@ -5,9 +5,9 @@ const fs = require('fs').promises
 
 const port = 3002;
 
-const app = express();
+const server = express();
 
-app.use(express.static('public'));
+server.use(express.static('public'));
 
 const HomepagePath = path.join(__dirname, 'public', 'index.html')
 const NotFoundPagePath = path.join(__dirname, 'public', '404.hmtl')
@@ -18,9 +18,9 @@ const handleHomepage = async (req, res) => {
 }
 
 
-app.get('/index.html', handleHomepage)
+server.get('/index.html', handleHomepage)
 
-app.get('*', async (req, res) => {
+server.get('*', async (req, res) => {
     try {
         const file = await fs.readFile(NotFoundPagePath)
         res.sendFile(file)
@@ -31,4 +31,4 @@ app.get('*', async (req, res) => {
 
 
 
-app.listen(port, () => console.log(`listening on port: ${port}`))
+server.listen(port, () => console.log(`listening on port: ${port}`))
