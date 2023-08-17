@@ -4,11 +4,6 @@ const students = [];
 const GetStudents = (req, res) => {
     const query = req.query
 
-    req.query = {
-        search: 'daniel',
-        department: 'soe'
-    }
-
     let studentsArrayDuplicate = students;
     if (query.progam) {
         studentsArrayDuplicate = studentsArrayDuplicate.filter(std => std.progam.includes(query.progam))
