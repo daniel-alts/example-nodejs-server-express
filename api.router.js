@@ -9,10 +9,11 @@ router.get('/', controller.GetStudents)
 
 router.post('/', middleware.CheckProgram, controller.CreateStudents)
 
-router.get('/:id', (req, res) => {
-    const id = req.params.id 
+router.get('/:id', controller.getOneStudent)
 
-    // add code here
-})
+router.patch("/:id", controller.updateStudent)
+    
+router.delete("/:id", controller.deleteStudent )
+
 
 module.exports = router
