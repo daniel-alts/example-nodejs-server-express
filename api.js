@@ -1,6 +1,7 @@
 const express = require('express');
-const studentsrouter = require('./students/api.router');
+const studentsrouter = require('./students/students.router');
 const programRouter = require('./progams/program.router')
+const userRouter = require('./users/users.router')
 
 const port = 3002;
 
@@ -23,6 +24,8 @@ app.use('/students', studentsrouter)
 // PATCH http://localhost/programs/123
 // DELETE http://localhost/programs/123
 app.use('/programs', programRouter)
+
+app.use('/users', userRouter)
 
 app.get('*', (req, res) => {
     res.status(404).json({
