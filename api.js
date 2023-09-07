@@ -2,12 +2,24 @@ const express = require('express');
 const studentsrouter = require('./students/students.router');
 const programRouter = require('./progams/program.router')
 const userRouter = require('./users/users.router')
+const sequelize = require('./config/sequelize');
+const User = require('./models/user')
 
 const port = 3002;
 
 const app = express()
 
 app.use(express.json()) // body parser
+
+app.get('/', async (req, res) => {
+
+    // select * from users
+    const users = await User.findAll()
+
+    return res.json({
+        users
+    })
+})
 
 // GET http://localhost/students
 // GET http://localhost/students/134/department
@@ -32,6 +44,12 @@ app.get('*', (req, res) => {
         data: null,
         error: 'Route not found'
     })
+})
+
+sequelize.authenticate().then(() => {
+    console.log('Connected to the db successfully!')
+}).catch((err) => {
+    console.log('Error connecting to db', err)
 })
 
 
