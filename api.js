@@ -2,12 +2,23 @@ const express = require('express');
 const studentsrouter = require('./students/students.router');
 const programRouter = require('./progams/program.router')
 const userRouter = require('./users/users.router')
+const db = require('./db');
+const UserModel = require('./models/user.model');
 
 const port = 3002;
 
 const app = express()
 
+db.connect();
+
 app.use(express.json()) // body parser
+
+app.get('/users', async (req, res) => {
+    const users = await UserModel.find({ email: 'daniel@example.com' }).limit(2).select({ name: 1, contact: 1, _id: 1 })
+    return res.json({
+        users
+    })
+})
 
 // GET http://localhost/students
 // GET http://localhost/students/134/department
