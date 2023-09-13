@@ -6,7 +6,10 @@ const router = express.Router();
 
 
 // Create user
-router.post('/', middleware.ValidateUserCreation, controller.CreateUser)
+router.post('/signup', middleware.ValidateUserCreation, controller.CreateUser)
+
+// Signin user
+router.post('/login', middleware.LoginValidation, controller.Login)
 
 
 module.exports = router
