@@ -3,9 +3,12 @@ const studentsrouter = require('./students/students.router');
 const programRouter = require('./progams/program.router')
 const userRouter = require('./users/users.router')
 const UserModel = require('./models/user.model');
+const morgan = require('morgan');
 
 
 const app = express()
+
+app.use(morgan('dev'));
 
 
 app.use(express.json()) // body parser
@@ -44,6 +47,15 @@ app.get('*', (req, res) => {
     return res.status(404).json({
         data: null,
         error: 'Route not found'
+    })
+})
+
+// globah error handler
+app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.status(500).json({
+        data: null,
+        error: 'Server Error'
     })
 })
 
