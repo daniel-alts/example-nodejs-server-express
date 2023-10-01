@@ -2,6 +2,7 @@ const express = require('express');
 const studentsrouter = require('./students/students.router');
 const programRouter = require('./progams/program.router')
 const userRouter = require('./users/users.router')
+const viewRouter = require('./views/views.router')
 const UserModel = require('./models/user.model');
 const morgan = require('morgan');
 
@@ -12,6 +13,12 @@ app.use(morgan('dev'));
 
 
 app.use(express.json()) // body parser
+app.use(express.urlencoded({ extended: true })); // body prser: formdata
+
+
+app.set('view engine', 'ejs')
+
+app.use('/views', viewRouter)
 
 // home route
 app.get('/', (req, res) => {

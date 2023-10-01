@@ -1,6 +1,7 @@
 const UserModel = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const logger = require('../logger');
+const userService = require('./users.services');
 
 require('dotenv').config()
 
@@ -85,8 +86,6 @@ const Login = async (req, res) => {
             data: null
         })
     }
-  
-
 }
 
 
