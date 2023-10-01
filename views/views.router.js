@@ -14,11 +14,22 @@ router.get('/index', (req, res) => {
     res.render('index')
 })
 
+router.post('/login', async (req, res) => {
+    const response = await userService.Login({ email: req.body.email, password: req.body.password })
+
+    if (response.code === 200) {
+        // set cookie
+        res.cookie('jwt', response.data.token, { maxAge: 360000 })
+        res.redirect('home')
+    } else {
+        res.redirect('index')
+    }
+});
+
 
 router.use(async (req, res, next) => {
 
     const token = req.cookies.jwt;
-
     if (token) {
         try {
             const decodedValue = await jwt.verify(token, process.env.JWT_SECRET);
@@ -36,19 +47,10 @@ router.use(async (req, res, next) => {
 })
 
 
-router.post('/login', async (req, res) => {
-    const response = await userService.Login({ email: req.body.email, password: req.body.password })
 
-    if (response.code === 200) {
-        // set cookie
-        res.cookie('jwt', response.data.token, { maxAge: 360000 })
-        res.redirect('home')
-    } else {
-        res.render('index')
-    }
-});
 
 router.get('/home', (req, res) => {
+    console.log(req.cookies)
     res.render('home');
 })
 
