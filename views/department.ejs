@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+    <header>
+        <%- include('./partials/header'); %>
+    </header>
+
+<h2>Departments</h2>
+<a href="/views/department/create">Create Department</a>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Active</th>
+    <th>Date Created</th>
+  </tr>
+  <% departments.forEach(function(department){ %>
+    <tr>
+        <td><%= department.name %></td>
+        <td><%= department.description %></td>
+        <td><%= department.active %></td>
+        <td><%= department.created_at %></td>
+      </tr>
+  <% }); %>
+</table>
+
+</body>
+</html>
+

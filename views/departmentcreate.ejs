@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+    <header>
+        <%- include('./partials/header'); %>
+    </header>
+
+<h2>Departments</h2>
+<a href="/views/department/create">Create Department</a>
+
+<form action="/views/department/create" method="post">
+    <label for="name">name:</label><br>
+    <input type="text" id="name" name="name" value=""><br>
+    <label for="description">description:</label><br>
+    <input type="text" id="description" name="description" value=""><br>
+
+    <input type="submit" value="Submit">
+  </form> 
+
+</body>
+</html>
+
