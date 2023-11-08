@@ -37,6 +37,7 @@
     "morgan": "^1.10.0",
     "shortid": "^2.2.16",
     "supertest": "^6.3.3",
+    "validatorjs": "^3.22.1",
     "winston": "^3.10.0"
   }
 }
