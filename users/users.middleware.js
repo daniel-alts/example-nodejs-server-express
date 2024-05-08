@@ -3,8 +3,9 @@ const Validator = require('validatorjs')
 
 const ValidateUserCreationWithJoi = async (req, res, next) => {
     try {
+        const bodyofRequest = req.body;
         const schema = joi.object({
-            name: joi.string().required(),
+            name: joi.string().optional(),
             password: joi.string().pattern(new RegExp('^[a-zA-Z0-9@#]{3,30}$')).required(),
             email: joi.string().email().required(),
             contact: joi.string().required(),
@@ -12,15 +13,15 @@ const ValidateUserCreationWithJoi = async (req, res, next) => {
             gender: joi.string().valid('male', 'female'),
             access_token: joi.array().items(joi.string().valid('x', 'y', 'z')),
             address: joi.object({
-                house_number: joi.number().optional(),
+                // age: joi.number().min(21).max(35).optional(),
                 home: joi.string(),
                 city: joi.string().empty(),
                 country_code: joi.string()
             })
         })
 
-        await schema.validateAsync(req.body, { abortEarly: true })
-    
+        await schema.validateAsync(bodyofRequest, { abortEarly: true })
+
         next()
     } catch (error) {
         return res.status(422).json({
