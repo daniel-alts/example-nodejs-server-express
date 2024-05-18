@@ -6,7 +6,7 @@ const controller = require('./students.controller')
 const router = express.Router();
 
 // router.use(globalMiddlewares.basicAuth)
-router.use(globalMiddlewares.bearerTokenAuth)
+// router.use(globalMiddlewares.bearerTokenAuth)
 
 // GET studtents
 router.get('/', controller.GetStudents)

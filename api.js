@@ -5,6 +5,8 @@ const userRouter = require('./users/users.router')
 const viewRouter = require('./views/views.router')
 const UserModel = require('./models/user.model');
 const morgan = require('morgan');
+const logger = require('./logger');
+const redisClient = require('./integrations/redis');
 
 const fs = require('fs');
 const { profile } = require('console');
@@ -117,21 +119,70 @@ app.post('/file/upload', upload.single('photo'), async (req, res, next) => {
 
 const homeRouteLimiter = rateLimit({
 	windowMs: 1 * 60 * 1000, // 1 minutes
-	limit: 1, // Limit each IP to 100 requests per `window` (here, per 1 minutes).
+	limit: 1000, // Limit each IP to 100 requests per `window` (here, per 1 minutes).
 	standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header.
 });
 
 // home route
 app.get('/', homeRouteLimiter, (req, res) => {
+    logger.info("Home route accessed")
     return res.status(200).json({ message: 'success', status: true })
 })
 
-// app.get('/users', async (req, res) => {
-//     const users = await UserModel.find({ email: 'daniel@example.com' }).limit(2).select({ name: 1, contact: 1, _id: 1 })
-//     return res.json({
-//         users
-//     })
-// })
+// application caching layer
+
+// database caching layer
+
+app.get('/users', async (req, res) => {
+    const query = req.query
+
+    const whereQuery = {};
+    const limit = query.per_page || 10
+    const page = query.page || 0
+
+    if (query.name) {
+        whereQuery.name = query.name
+    }
+
+    if (query.email) {
+        whereQuery.email = query.email
+    }
+
+    // check cache
+    const cacheKey = `users:${JSON.stringify(whereQuery)}:${limit}:${page}`
+
+    // get data from database
+    const data = await redisClient.get(cacheKey)
+
+
+    // cache miss
+    if (data) {
+        console.log('returning data from cache')
+        return res.json({
+            data: JSON.parse(data),
+            error: null
+        })
+    }
+
+
+    console.log('returning data from database')
+    const users = await UserModel.find(whereQuery).limit(limit).skip(page).exec()
+
+    // set cache
+    await redisClient.setEx(cacheKey, 1 * 60 ,JSON.stringify(users))
+
+    return res.json({
+        users
+    })
+
+})
+
+app.post('/users', async (req, res) => {
+    await redisClient.del('/users')
+
+    await UserModel.create(req.body)
+    await UserModel.update()
+})  
 
 // app.get('/', limiter, (req, res) => res.json({ message: 'Welcome'}))
 
